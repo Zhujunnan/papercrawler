@@ -9,4 +9,4 @@ To download summarization-related papers in ACL2020
 ```python
 download_nlp_paper('acl', 2020, 'summari')
 ```
-
+If some papers fail to download, just run this script again.
