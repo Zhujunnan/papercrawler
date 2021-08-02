@@ -44,7 +44,7 @@ def download_nlp_paper(conference, year, keywords=None, savedir=None, poolnum=8)
     savedir = os.path.join(os.path.abspath(savedir), '{0}{1}'.format(conference.upper(), year))
     if not os.path.isdir(savedir):
         os.mkdir(savedir)
-    url = 'https://www.aclweb.org/anthology/events/{0}-{1}/'.format(conference, year)
+    url = 'https://www.aclanthology.org/events/{0}-{1}/'.format(conference, year)
     with rt.urlopen(url) as f:
         html = f.read()
     html = BeautifulSoup(html, features="html.parser")
@@ -57,7 +57,7 @@ def download_nlp_paper(conference, year, keywords=None, savedir=None, poolnum=8)
     for item in items:
         info = list(item.children)[1].find('a', {'class': 'align-middle'})
         title, paper_info = info.text, info.attrs['href']
-        download_url = 'https://www.aclweb.org{}.pdf'.format(paper_info[:-1])
+        download_url = 'https://www.aclanthology.org{}.pdf'.format(paper_info[:-1])
 
         if not keywords or is_related(title, keywords):
             related_paper_num += 1
