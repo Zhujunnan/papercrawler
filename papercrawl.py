@@ -49,25 +49,36 @@ def download_nlp_paper(conference, year, keywords=None, savedir=None, poolnum=8)
         html = f.read()
     html = BeautifulSoup(html, features="html.parser")
     keywords = keywords.split('-') if keywords else None
+    
+    if "acl" in conference:
+        categories = [f"{year}{conference}-long", f"{year}{conference}-short", 
+                    f"{year}findings-{conference}"]
+    else:
+        categories = [f"{year}{conference}-main",  f"{year}findings-{conference}"]
 
-    items = html.findAll("p", {'class':'align-items-stretch'})
-    logging.info('{0} papers have been found in {1}-{2}'.format(len(items), conference.upper(), year))
-    related_paper_num = 0
     available_paper_list = []
-    for item in items:
-        info = list(item.children)[1].find('a', {'class': 'align-middle'})
-        title, paper_info = info.text, info.attrs['href']
-        download_url = 'https://www.aclanthology.org{}.pdf'.format(paper_info[:-1])
-
-        if not keywords or is_related(title, keywords):
-            related_paper_num += 1
-            if 'W' in paper_info:
-                filename = '[{0}{1}WorkShop] {2}.pdf'.format(conference, year, title)
-            else:
-                filename = '[{0}{1}] {2}.pdf'.format(conference, year, title)
-            savedfile = os.path.join(savedir, filename)
-            if not os.path.exists(savedfile):
-                available_paper_list.append((download_url, savedfile, title))
+    for cat in categories:
+        
+        items = html.find("div", {"id": cat}).findAll("p", {'class':'align-items-stretch'})
+        logging.info('{0} papers have been found in {1}'.format(len(items), cat))
+        related_paper_num = 0
+        sub_dir = os.path.join(savedir, cat)
+        if not os.path.isdir(sub_dir):
+            os.mkdir(sub_dir)
+        for item in items:
+            info = item.findAll('a', {'class': 'align-middle'})[-1]
+            title, paper_info = info.text, info.attrs['href']
+            download_url = 'https://www.aclanthology.org{}.pdf'.format(paper_info[:-1])
+    
+            if not keywords or is_related(title, keywords):
+                related_paper_num += 1
+                if 'W' in paper_info:
+                    filename = '[{0}{1}WorkShop] {2}.pdf'.format(conference, year, title)
+                else:
+                    filename = '[{0}{1}] {2}.pdf'.format(conference, year, title)
+                savedfile = os.path.join(savedir, filename)
+                if not os.path.exists(savedfile):
+                    available_paper_list.append((download_url, savedfile, title))
     logging.info('Found {} papers related'.format(related_paper_num))
     logging.info('Start dowloading')
 
