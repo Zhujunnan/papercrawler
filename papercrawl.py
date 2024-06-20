@@ -106,6 +106,5 @@ def download_nlp_paper(conference, year, keywords=None, savedir=None, poolnum=8)
 
 
 if __name__ == '__main__':
-    # download_nlp_paper('naacl', 2000, 'summari')
-    for i in range(2000, 2020):
-        download_nlp_paper('cl', i, 'summar')
+    download_nlp_paper('naacl', 2024, 'summari')
+
