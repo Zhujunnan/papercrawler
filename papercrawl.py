@@ -56,12 +56,12 @@ def download_nlp_paper(conference, year, keywords=None, savedir=None, poolnum=8)
     else:
         categories = [f"{year}{conference}-main",  f"{year}findings-{conference}"]
 
+    related_paper_num = 0
     available_paper_list = []
     for cat in categories:
         
         items = html.find("div", {"id": cat}).findAll("p", {'class':'align-items-stretch'})
         logging.info('{0} papers have been found in {1}'.format(len(items), cat))
-        related_paper_num = 0
         sub_dir = os.path.join(savedir, cat)
         if not os.path.isdir(sub_dir):
             os.mkdir(sub_dir)
