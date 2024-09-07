@@ -10,3 +10,14 @@ To download summarization-related papers in ACL2020
 download_nlp_paper('acl', 2020, 'summari')
 ```
 If some papers fail to download, just run this script again.
+
+# command
+
+You can download all the conferences by: 
+``` python
+python papercrawl.py --conference all --year 2024 --keywords "keywords one-keywords two" --driver /path/to/chromedriver
+``` 
+or download one conference (only sigir need chrome driver):
+``` python
+python papercrawl.py --conference acl --year 2024 --keywords "keywords one-keywords two"
+``` 
