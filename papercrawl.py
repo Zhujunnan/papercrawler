@@ -424,25 +424,28 @@ def download_papers(conference: str, year: int, keywords: Optional[str], savedir
     :param downtime: 每次下载之间的等待时间 (仅适用于 'sigir')
     :return: None
     """
-    if conference in ['acl', 'emnlp', 'naacl', 'eacl']:  # 处理 NLP 相关的会议
-        print(f"downloading paper in {conference} {year}...")
-        download_nlp_paper(conference=conference, year=year, 
-                           keywords=keywords, savedir=savedir, poolnum=poolnum)
-    elif 'neurips' in conference:
-        print(f"downloading paper in {conference} {year}...")
-        download_neurips_paper(year=year, keywords=keywords, savedir=savedir, poolnum=poolnum)
-    elif 'icml' in conference:
-        print(f"downloading paper in {conference} {year}...")
-        download_icml_paper(year=year, keywords=keywords, savedir=savedir, poolnum=poolnum)
-    elif 'iclr' in conference:
-        print(f"downloading paper in {conference} {year}...")
-        download_iclr_paper(year=year, keywords=keywords, savedir=savedir, poolnum=poolnum)
-    elif 'sigir' in conference:
-        print(f"downloading paper in {conference} {year}...")
-        download_sigir_paper(year=year, keywords=keywords, savedir=savedir, poolnum=poolnum, 
-                             driverpath=driverpath, downtime=downtime)
-    else:
-        raise ValueError(f"Unsupported conference: {conference}")
+    try:
+        if conference in ['acl', 'emnlp', 'naacl', 'eacl']:  # 处理 NLP 相关的会议
+            print(f"downloading paper in {conference} {year}...")
+            download_nlp_paper(conference=conference, year=year, 
+                            keywords=keywords, savedir=savedir, poolnum=poolnum)
+        elif 'neurips' in conference:
+            print(f"downloading paper in {conference} {year}...")
+            download_neurips_paper(year=year, keywords=keywords, savedir=savedir, poolnum=poolnum)
+        elif 'icml' in conference:
+            print(f"downloading paper in {conference} {year}...")
+            download_icml_paper(year=year, keywords=keywords, savedir=savedir, poolnum=poolnum)
+        elif 'iclr' in conference:
+            print(f"downloading paper in {conference} {year}...")
+            download_iclr_paper(year=year, keywords=keywords, savedir=savedir, poolnum=poolnum)
+        elif 'sigir' in conference:
+            print(f"downloading paper in {conference} {year}...")
+            download_sigir_paper(year=year, keywords=keywords, savedir=savedir, poolnum=poolnum, 
+                                driverpath=driverpath, downtime=downtime)
+        else:
+            raise ValueError(f"Unsupported conference: {conference}")
+    except Exception:
+        logging.info(f"downloading {conference} {year} failed, please check it's availablity...")
 
 # 处理 'all' 会议情况
 def process_all_conferences(year: int, keywords: Optional[str], savedir: str, 
